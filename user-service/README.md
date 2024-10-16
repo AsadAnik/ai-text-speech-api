@@ -1,216 +1,85 @@
-# Microservices Project with Nest.js
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-This is a microservices project built using **Nest.js**. It consists of the following services:
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-- **API Gateway**: Central entry point for all client requests. Routes requests to the appropriate microservice.
-- **Auth Service**: Handles user authentication (login, JWT management).
-- **User Service**: Manages user profiles and related data.
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-Communication between the services is handled by **RabbitMQ** as a message broker.
+## Description
 
-## Table of Contents
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-- [Project Structure](#project-structure)
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
-- [Setting Up Services](#setting-up-services)
-  - [API Gateway](#api-gateway)
-  - [Auth Service](#auth-service)
-  - [User Service](#user-service)
-- [RabbitMQ Setup](#rabbitmq-setup)
-- [Running the Services](#running-the-services)
-- [Testing the API](#testing-the-api)
-- [Future Enhancements](#future-enhancements)
-
----
-
-## Project Structure
-
-```
-/microservices-project
-│
-├── /api-gateway
-│   ├── src/
-│   └── ...
-│   └── package.json
-│
-├── /auth-service
-│   ├── src/
-│   └── ...
-│   └── package.json
-│
-├── /user-service
-│   ├── src/
-│   └── ...
-│   └── package.json
-│
-└── docker-compose.yml
-```
-
-- **API Gateway**: Acts as a gateway for routing client requests to the respective microservice.
-- **Auth Service**: Handles user authentication (login, password, etc.).
-- **User Service**: Manages user profile information.
-
----
-
-## Technologies Used
-
-- **Nest.js**: Node.js framework used for all services.
-- **RabbitMQ**: Message broker for communication between services.
-- **Docker**: For running RabbitMQ.
-- **TypeScript**: The programming language used for the services.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-Make sure you have the following installed on your local machine:
-
-- **Node.js**: [Download Node.js](https://nodejs.org)
-- **Nest.js CLI**: Install globally with:
-  ```bash
-  npm install -g @nestjs/cli
-  ```
-- **Docker**: [Download Docker](https://www.docker.com/get-started) (for running RabbitMQ)
-
----
-
-## Setting Up Services
-
-### 1. API Gateway
-
-The **API Gateway** routes requests to the appropriate service and handles communication between the **Auth** and **User** services.
-
-- Navigate to the `api-gateway` folder:
-  ```bash
-  cd api-gateway
-  ```
-- Install the dependencies:
-  ```bash
-  npm install
-  ```
-
-### 2. Auth Service
-
-The **Auth Service** handles user login and returns a JWT token for authentication.
-
-- Navigate to the `auth-service` folder:
-  ```bash
-  cd auth-service
-  ```
-- Install the dependencies:
-  ```bash
-  npm install
-  ```
-
-### 3. User Service
-
-The **User Service** manages user profile data and responds to profile-related requests.
-
-- Navigate to the `user-service` folder:
-  ```bash
-  cd user-service
-  ```
-- Install the dependencies:
-  ```bash
-  npm install
-  ```
-
----
-
-## RabbitMQ Setup
-
-The services communicate via **RabbitMQ**, which acts as a message broker. You can run RabbitMQ easily using **Docker**.
-
-### Step 1: Running RabbitMQ
-
-Start RabbitMQ with Docker using the provided `docker-compose.yml` file:
+## Project setup
 
 ```bash
-docker-compose up -d
+$ npm install
 ```
 
-This will expose the RabbitMQ server at `amqp://localhost:5672` and a management UI at `http://localhost:15672` (default login: guest/guest).
-
----
-
-## Running the Services
-
-### 1. Run the API Gateway
-
-Navigate to the `api-gateway` directory and start the service:
+## Compile and run the project
 
 ```bash
-cd api-gateway
-npm run start
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
-The API Gateway will run on `http://localhost:3000`.
-
-### 2. Run the Auth Service
-
-Navigate to the `auth-service` directory and start the service:
+## Run tests
 
 ```bash
-cd auth-service
-npm run start
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
 ```
 
-### 3. Run the User Service
+## Resources
 
-Navigate to the `user-service` directory and start the service:
+Check out a few resources that may come in handy when working with NestJS:
 
-```bash
-cd user-service
-npm run start
-```
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
----
+## Support
 
-## Testing the API
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-You can test the microservices through the **API Gateway** using **curl** or **Postman**.
+## Stay in touch
 
-### 1. Login via Auth Service (through API Gateway)
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-```bash
-curl -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"userId": 1, "password": "secret"}'
-```
+## License
 
-This request will route through the **API Gateway** and be processed by the **Auth Service**, returning a mock JWT token.
-
-### 2. Fetch User Profile (through API Gateway)
-
-```bash
-curl -X GET http://localhost:3000/api/profile -H "Content-Type: application/json" -d '{"userId": 1}'
-```
-
-This request will route through the **API Gateway** and be processed by the **User Service**, returning a mock user profile.
-
----
-
-## Future Enhancements
-
-- **Add JWT Authentication**: Secure the routes using JWT tokens generated by the **Auth Service**.
-- **Database Integration**: Connect the **User Service** to a PostgreSQL database for persistent user profiles.
-- **Rate Limiting and Caching**: Implement rate limiting and response caching in the **API Gateway**.
-- **Load Balancing**: Deploy multiple instances of each service for load balancing and scalability.
-
----
-
-### License
-
-This project is open-source and available under the MIT License.
-
----
-
-### Authors
-
-- **Asad Anik**
-- **Yeaseen Armaan**
-
----
-
-This `README.md` provides a step-by-step guide to running and testing the microservices project.
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

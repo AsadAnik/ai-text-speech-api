@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
-  // Handle login reguest from API gateway..
+  // Handle login request from API Gateway
   // region Handle Login Request
   @MessagePattern({ cmd: 'login' })
   async login(data: { userId: number; password: string }) {
