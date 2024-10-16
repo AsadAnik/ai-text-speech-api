@@ -15,6 +15,11 @@ async function bootstrap() {
       queueOptions: {
         durable: false,
       },
+
+      // Add a timeout here (in milliseconds)
+      socketOptions: {
+        heartbeat: 60, // Keep the connection alive with a 60-second heartbeat
+      },
     },
   });
 
@@ -27,6 +32,11 @@ async function bootstrap() {
       queue: 'user_queue',
       queueOptions: {
         durable: false,
+      },
+
+      // Add a timeout here (in milliseconds)
+      socketOptions: {
+        heartbeat: 60, // Keep the connection alive with a 60-second heartbeat
       },
     },
   });

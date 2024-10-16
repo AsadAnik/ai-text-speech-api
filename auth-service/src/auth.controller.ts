@@ -8,6 +8,7 @@ export class AuthController {
   @MessagePattern({ cmd: 'login' })
   async login(data: { userId: number; password: string }) {
     // Simulate login and return JWT token
+    console.log('Login Application here - ', data);
     return { token: 'JWT-TOKEN', userId: data.userId };
   }
 }
