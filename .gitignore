@@ -1,0 +1,54 @@
+# Node.js
+/node_modules
+/dist
+/package-lock.json
+/yarn.lock
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker files
+docker-compose.override.yml
+docker-compose.yml
+*.docker
+*.dockerfile
+docker-compose-*
+
+# Build output directories for each app
+/apps/**/dist
+/apps/**/node_modules
+
+# Libraries output (shared libs)
+/libs/**/dist
+/libs/**/node_modules
+
+# Coverage directory for tests
+coverage
+
+# Optional npm cache directory
+.npm
+.npmrc
+
+# Jest test outputs
+/jest/
+coverage/

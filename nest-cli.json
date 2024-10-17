@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/ai-text-speech-api/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/ai-text-speech-api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/ai-text-speech-api",
+  "projects": {
+    "ai-text-speech-api": {
+      "type": "application",
+      "root": "apps/ai-text-speech-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/ai-text-speech-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ai-text-speech-api/tsconfig.app.json"
+      }
+    },
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+      }
+    }
+  }
+}

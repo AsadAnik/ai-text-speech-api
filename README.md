@@ -27,24 +27,29 @@ Communication between the services is handled by **RabbitMQ** as a message broke
 ## Project Structure
 
 ```
-/microservices-project
+/microservices-monorepo
 │
-├── /api-gateway
-│   ├── src/
-│   └── ...
-│   └── package.json
+├── /apps
+│   ├── /api-gateway
+│   │   ├── src/
+│   │   └── ...
+│   ├── /auth
+│   │   ├── src/
+│   │   └── ...
+│   ├── /user
+│   │   ├── src/
+│   │   └── ...
 │
-├── /auth-service
-│   ├── src/
-│   └── ...
-│   └── package.json
+├── /libs
+│   ├── /shared
+│   │   ├── src/
+│   │   └── ...
+│   └── /common
+│       ├── src/
+│       └── ...
 │
-├── /user-service
-│   ├── src/
-│   └── ...
-│   └── package.json
-│
-└── docker-compose.yml
+├── package.json
+└── nest-cli.json
 ```
 
 - **API Gateway**: Acts as a gateway for routing client requests to the respective microservice.
