@@ -5,36 +5,38 @@ import { Observable } from 'rxjs';
 @Controller('api')
 export class ApiGateController {
     constructor(
-        @Inject('TEXT_VOICE_SERVICE') private readonly textVoiceClient: ClientProxy
+        @Inject('AUTH_SERVICE') private readonly authClient: ClientProxy,
+        @Inject('USER_SERVICE') private readonly userClient: ClientProxy,
+        @Inject('TEXT_VOICE_SERVICE') private readonly textVoiceClient: ClientProxy,
     ) {}
 
     // Client for Auth Service
     // region Auth Service Client
-    @Client({
-        transport: Transport.RMQ,
-        options: {
-            urls: ['amqp://localhost:5672'],
-            queue: 'auth_queue',
-            queueOptions: {
-                durable: false,
-            },
-        },
-    })
-    private authClient: ClientProxy;
+    // @Client({
+    //     transport: Transport.RMQ,
+    //     options: {
+    //         urls: ['amqp://localhost:5672'],
+    //         queue: 'auth_queue',
+    //         queueOptions: {
+    //             durable: false,
+    //         },
+    //     },
+    // })
+    // private authClient: ClientProxy;
 
     // Client for User Service
     // region User Service Client
-    @Client({
-        transport: Transport.RMQ,
-        options: {
-            urls: ['amqp://localhost:5672'],
-            queue: 'user_queue',
-            queueOptions: {
-                durable: false,
-            },
-        },
-    })
-    private userClient: ClientProxy;
+    // @Client({
+    //     transport: Transport.RMQ,
+    //     options: {
+    //         urls: ['amqp://localhost:5672'],
+    //         queue: 'user_queue',
+    //         queueOptions: {
+    //             durable: false,
+    //         },
+    //     },
+    // })
+    // private userClient: ClientProxy;
 
     // Client for Text-Voice Service
     // region Text-Voice Service Client
@@ -104,16 +106,6 @@ export class ApiGateController {
     // region Emit Message
     @Get('emit')
     async all() {
-
-
-        try {
-            const response = this.textVoiceClient.emit('myEmit', 'I am from Emit here');
-            console.log('Text Voice Data: ', response);
-            return response;
-
-        } catch (error) {
-            // Return a custom error message
-            throw new HttpException('Text-Voice service is unavailable', HttpStatus.SERVICE_UNAVAILABLE);
-        }
+        this.textVoiceClient.emit('myEmit', 'I am from Emit here');
     }
 }

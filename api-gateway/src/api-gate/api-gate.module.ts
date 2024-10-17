@@ -5,28 +5,28 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 @Module({
   imports: [
     ClientsModule.register([
-      // {
-      //   name: 'AUTH_SERVICE',
-      //   transport: Transport.RMQ,
-      //   options: {
-      //     urls: ['amqp://localhost:5672'],
-      //     queue: 'auth_queue',
-      //     queueOptions: {
-      //       durable: false,
-      //     },
-      //   },
-      // },
-      // {
-      //   name: 'USER_SERVICE',
-      //   transport: Transport.RMQ,
-      //   options: {
-      //     urls: ['amqp://localhost:5672'],
-      //     queue: 'user_queue',
-      //     queueOptions: {
-      //       durable: false,
-      //     },
-      //   },
-      // },
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'auth_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'user_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
       {
         name: 'TEXT_VOICE_SERVICE',
         transport: Transport.RMQ,
