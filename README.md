@@ -33,10 +33,10 @@ Communication between the services is handled by **RabbitMQ** as a message broke
 │   ├── /api-gateway
 │   │   ├── src/
 │   │   └── ...
-│   ├── /auth
+│   ├── /auth-service
 │   │   ├── src/
 │   │   └── ...
-│   ├── /user
+│   ├── /user-service
 │   │   ├── src/
 │   │   └── ...
 │

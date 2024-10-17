@@ -27,6 +27,33 @@
       "compilerOptions": {
         "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
+    },
+    "auth-service": {
+      "type": "application",
+      "root": "apps/auth-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
+      }
+    },
+    "user-service": {
+      "type": "application",
+      "root": "apps/user-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/user-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/user-service/tsconfig.app.json"
+      }
+    },
+    "textspeech-service": {
+      "type": "application",
+      "root": "apps/textspeech-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/textspeech-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/textspeech-service/tsconfig.app.json"
+      }
     }
   }
 }
