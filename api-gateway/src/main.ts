@@ -41,6 +41,24 @@ async function bootstrap() {
     },
   });
 
+  // Connect to Text-Voice Service (via RabbitMQ)
+  // region Text-Voice Service
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://localhost:5672'],
+      queue: 'text_voice_queue',
+      queueOptions: {
+        durable: false,
+      },
+
+      // Add a timeout here (in milliseconds)
+      socketOptions: {
+        heartbeat: 120, // Keep the connection alive with a 60-second heartbeat
+      },
+    },
+  });
+
   // Start all services..
   // region Start All Services
   await app.startAllMicroservices();

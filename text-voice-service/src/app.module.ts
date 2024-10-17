@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ApiGateModule } from './api-gate/api-gate.module';
+import { TextVoiceModule } from './text-voice/text-voice.module';
 
 @Module({
-  imports: [ApiGateModule],
+  imports: [TextVoiceModule],
   controllers: [AppController],
   providers: [AppService],
 })
