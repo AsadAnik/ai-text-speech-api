@@ -17,6 +17,19 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@app/shared-dtos": [
+        "libs/shared-dtos/src"
+      ],
+      "@app/shared-dtos/*": [
+        "libs/shared-dtos/src/*"
+      ],
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/common/*": [
+        "libs/common/src/*"
+      ]
+    }
   }
 }

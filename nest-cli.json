@@ -10,15 +10,6 @@
   "monorepo": true,
   "root": "apps/ai-text-speech-api",
   "projects": {
-    "ai-text-speech-api": {
-      "type": "application",
-      "root": "apps/ai-text-speech-api",
-      "entryFile": "main",
-      "sourceRoot": "apps/ai-text-speech-api/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/ai-text-speech-api/tsconfig.app.json"
-      }
-    },
     "api-gateway": {
       "type": "application",
       "root": "apps/api-gateway",
@@ -53,6 +44,24 @@
       "sourceRoot": "apps/textspeech-service/src",
       "compilerOptions": {
         "tsConfigPath": "apps/textspeech-service/tsconfig.app.json"
+      }
+    },
+    "shared-dtos": {
+      "type": "library",
+      "root": "libs/shared-dtos",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared-dtos/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared-dtos/tsconfig.lib.json"
+      }
+    },
+    "common": {
+      "type": "library",
+      "root": "libs/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
     }
   }
