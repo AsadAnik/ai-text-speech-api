@@ -1,47 +1,62 @@
-version: '3'
+version: "3.8"
 services:
+  # region: RabbitMQ
   rabbitmq:
-    image: 'rabbitmq:3-management'
+    image: "rabbitmq:3-management"
     container_name: rabbitmq
     ports:
-      - '5672:5672'
-      - '15672:15672' # RabbitMQ Management UI
+      - "5672:5672"
+      - "15672:15672" # RabbitMQ Management UI
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
+  # region: API Gateway
   api-gateway:
     build:
       context: .
       dockerfile: ./apps/api-gateway/Dockerfile
     container_name: api-gateway
+    command: npm run start:dev api-gateway
     ports:
-      - '3000:3000'
+      - "3000:3000"
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
 
+  # region: Auth Service
   auth-service:
     build:
       context: .
       dockerfile: ./apps/auth-service/Dockerfile
     container_name: auth-service
+    command: npm run start:dev auth-service
     ports:
-      - '3001:3000'  # Expose auth service on a different port
+      - "3001:3000" # Expose auth service on a different port
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
 
+  # region: User Service
   user-service:
     build:
       context: .
       dockerfile: ./apps/user-service/Dockerfile
     container_name: user-service
+    command: npm run start:dev user-service
     ports:
-      - '3002:3000'  # Expose user service on a different port
+      - "3002:3000" # Expose user service on a different port
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     environment:
       RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
