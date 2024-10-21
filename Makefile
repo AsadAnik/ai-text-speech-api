@@ -21,3 +21,6 @@ restart-rmq:
 
 down-rmq:
 	docker-compose down rabbitmq
+
+up-pg:
+	docker-compose up --build postgres
