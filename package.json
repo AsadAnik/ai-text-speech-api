@@ -17,7 +17,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/ai-text-speech-api/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/ai-text-speech-api/test/jest-e2e.json",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm migration:run -- -d libs/common/src/database/data-source.ts",
+    "migration:revert": "npm run typeorm migration:revert -- -d libs/common/src/database/data-source.ts",
+    "migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create ./libs/common/src/database/migrations/InitialMigration"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -31,8 +36,7 @@
     "joi": "^17.13.3",
     "pg": "^8.13.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1",
-    "typeorm": "^0.3.20"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -53,8 +57,9 @@
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "typeorm": "^0.3.20",
     "typescript": "^5.1.3"
   },
   "jest": {

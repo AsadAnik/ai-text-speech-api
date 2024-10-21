@@ -1,6 +1,7 @@
 import { Module, Global } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 
 @Global()
 @Module({
@@ -17,8 +18,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
                 username: configService.get<string>('POSTGRES_USER'),
                 password: configService.get<string>('POSTGRES_PASSWORD'),
                 database: configService.get<string>('POSTGRES_DB'),
+                entities: [join(__dirname, '../../../shared/src/entities/**/*.entity{.ts,.js}')],
+                migrations: [join(__dirname, './migrations/*{.ts,.js}')],
+                migrationsRun: true,  // Automatically run migrations on app start
                 autoLoadEntities: true,
-                synchronize: true,  // Disable synchronize in production
+                // synchronize: false,   // Disable synchronize in production
+                synchronize: configService.get<string>('NODE_ENV') !== 'production',
             }),
             inject: [ConfigService],
         }),
