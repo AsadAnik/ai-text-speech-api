@@ -12,3 +12,12 @@ up-dev:
 
 down:
 	docker-compose down
+
+up-rmq:
+	docker-compose up rabbitmq
+
+restart-rmq:
+	docker-compose restart rabbitmq
+
+down-rmq:
+	docker-compose down rabbitmq

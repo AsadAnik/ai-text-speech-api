@@ -11,12 +11,21 @@ export class AuthServiceController {
     return this.authServiceService.getHello();
   }
 
-  // region Message Receive Login
   @MessagePattern({ cmd: 'login' })
-  login(data: any) {
+  loginApiGateWay(user: any) {
     return {
       token: 'token',
-      data
+      user,
+      message: 'i am new here',
+    };
+  }
+
+  // region Message Receive Login
+  @MessagePattern({ cmd: 'verify-me' })
+  login(user: any) {
+    return {
+      token: 'token',
+      user
     };
   }
 }

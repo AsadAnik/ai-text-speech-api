@@ -18,16 +18,16 @@ async function bootstrap() {
   });
 
   // region Connect User-Service
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://localhost:5672'],
-      queue: 'user_queue',
-      queueOptions: {
-        durable: false,
-      },
-    },
-  });
+  // app.connectMicroservice<MicroserviceOptions>({
+  //   transport: Transport.RMQ,
+  //   options: {
+  //     urls: ['amqp://localhost:5672'],
+  //     queue: 'user_queue',
+  //     queueOptions: {
+  //       durable: false,
+  //     },
+  //   },
+  // });
 
   await app.startAllMicroservices();
   await app.listen(process.env.port ?? 3000);
