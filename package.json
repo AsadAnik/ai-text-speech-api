@@ -76,7 +76,8 @@
     ],
     "moduleNameMapper": {
       "^@app/shared-dtos(|/.*)$": "<rootDir>/libs/shared-dtos/src/$1",
-      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
     }
   }
 }

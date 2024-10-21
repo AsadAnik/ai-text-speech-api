@@ -4,6 +4,7 @@ import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 
 async function bootstrap() {
   // RabbitMQ microservice configuration
+  // region Service Connect
   const rabbitMqApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AuthServiceModule,
     {

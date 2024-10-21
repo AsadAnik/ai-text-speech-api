@@ -16,9 +16,9 @@ export class RmqService {
         return {
             transport: Transport.RMQ,
             options: {
-                // urls: [this.configService.get<string>('RABBIT_MQ_URI')],
+                urls: [this.configService.get<string>('RABBIT_MQ_URI')],
                 // urls: ['amqp://guest:guest@localhost:5672'],
-                urls: ['amqp://localhost:5672'],
+                // urls: ['amqp://localhost:5672'],
                 queue: queue,
                 queueOptions: { durable: false },
                 noAck,

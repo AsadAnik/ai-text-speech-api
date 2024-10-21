@@ -11,7 +11,7 @@ import { RmqModule } from '@app/common';
       isGlobal: true,
       validationSchema:  Joi.object({
         RABBIT_MQ_URI: Joi.string().required(),
-        RABBIT_MQ_AUTH_QUEUE: Joi.string().required(),
+        RABBIT_MQ_USER_QUEUE: Joi.string().required(),
       }),
       envFilePath: './apps/user-service/.env',
     }),
