@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { UserServiceService } from './user-service.service';
-import { ClientProxy, MessagePattern, ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { ClientProxy, MessagePattern, ClientProxyFactory } from '@nestjs/microservices';
 import { RmqService } from '@app/common';
 
 @Controller('user')

@@ -14,8 +14,6 @@ async function bootstrap() {
         queue: "auth_queue", // Queue to listen to
         queueOptions: {
           durable: false, // Non-durable queue
-          retryAttempts: 5, // Retry attempts if RabbitMQ connection fails
-          retryDelay: 3000, // Retry delay of 3 seconds
         },
       },
     }

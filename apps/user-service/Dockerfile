@@ -12,6 +12,6 @@ COPY . .
 # Install dependencies using npm workspaces
 RUN npm install
 
-EXPOSE 3000
+EXPOSE 3002
 
 CMD ["npm", "run", "start:dev", "user-service"]
