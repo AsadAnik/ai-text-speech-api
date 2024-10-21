@@ -11,7 +11,7 @@ async function bootstrap() {
     {
       transport: Transport.RMQ,
       options: {
-        urls: ["amqp://localhost:5672"], // RabbitMQ connection
+        urls: ["amqp://guest:guest@rabbitmq:5672"], // RabbitMQ connection
         queue: "user_queue", // Queue to listen to
         queueOptions: {
           durable: false, // Non-durable queue
