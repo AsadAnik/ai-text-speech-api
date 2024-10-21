@@ -38,4 +38,10 @@ export class UserServiceController {
       data
     };
   }
+
+  @MessagePattern({cmd: 'test'})
+  test(data: unknown) {
+    return data;
+  }
+
 }

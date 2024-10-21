@@ -5,14 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '@app/shared';
 import { Repository } from 'typeorm';
 
-@Controller('auth')
+@Controller("auth")
 export class AuthServiceController {
   constructor(
     private readonly authServiceService: AuthServiceService, 
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  @Get('login')
+  @Get("login")
   getHello(): string {
     return this.authServiceService.getHello();
   }
@@ -31,18 +31,28 @@ export class AuthServiceController {
   @MessagePattern({ cmd: 'login' })
   loginApiGateWay(user: any) {
     return {
-      token: 'token',
+      token: "token",
       user,
-      message: 'i am new here',
+      message: "i am new here",
     };
   }
 
   // region Message Receive Login
-  @MessagePattern({ cmd: 'verify-me' })
+  @MessagePattern({ cmd: "verify-me" })
   login(user: any) {
     return {
-      token: 'token',
-      user
+      token: "token",
+      user,
     };
   }
+
+  // region test route
+  @Get("test")
+  test() {
+    return this.userClient.send(
+      { cmd: "test" },
+      { firstname: "armaan", degree: "ssc" }
+    );
+  }
+  
 }
