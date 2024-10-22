@@ -65,6 +65,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ai_ts_user_db
+    restart: always
 
   # region: User Service
   user-service:
@@ -89,6 +90,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ai_ts_user_db
+    restart: always
 
 volumes:
   postgres-data:

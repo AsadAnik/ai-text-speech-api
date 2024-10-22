@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { CreateUserDto } from "@app/shared";
-import { LoginUserDto } from "@app/shared";
+import { LoginUserDto, RegisterUserDto } from "@app/shared";
 import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -9,19 +8,24 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 
 @Injectable()
 export class AuthServiceService {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>
-  ) {}
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
 
+  /**
+   * REGISTER USER SERVICE
+   * @param body 
+   * @returns 
+   */
   //  region register service
-  async register(body: any): Promise<User> {
+  async register(body: RegisterUserDto): Promise<User> {
     const { email, username, password, first_name, last_name, image_file } = body;
 
     // Check if user already exists
-    const existingUser = await this.userRepository.findOne({ where: { email } });
+    const existingUser = await this.emailOrUsernameExists(username, email);
+
+    console.log('EXISTTSSS - ', existingUser);
+
     if (existingUser) {
-      throw new HttpException("User already exists", HttpStatus.BAD_REQUEST);
+      throw new HttpException("This Username or Email is already exists", HttpStatus.BAD_REQUEST);
     }
 
     // Hash the password
@@ -42,6 +46,12 @@ export class AuthServiceService {
     return await this.userRepository.save(newUser);
   }
 
+
+  /**
+   * LOGIN USER SERVICE
+   * @param loginUserDto 
+   * @returns 
+   */
   // region login service
   async login(loginUserDto: LoginUserDto): Promise<{ token: string }> {
     const { email, password } = loginUserDto;
@@ -56,17 +66,23 @@ export class AuthServiceService {
     return { token: Math.random.toString() }; // Replace with actual token generation logic
   }
 
-  constructor() {}
+  /**
+   * EMAIL / USERNAME EXISTS SERVICE CHECK
+   * @param emailOrUsername 
+   * @returns 
+   */
+  // region Username/Email Availity
+  async emailOrUsernameExists(username: string, email: string): Promise<boolean> {
+    let user: User | boolean;
 
-  getHello(): string {
-    return "Hello World!";
+    if (username && username.trim() !== '') {
+      user = await this.userRepository.findOne({ where: { username } });
+    }
+
+    if (email && email.trim() !== '') {
+      user = await this.userRepository.findOne({ where: { email } });
+    }
+
+    return !!user;
   }
-
-  getTest(): { message: string } {
-    return {
-      message: "Hello Test",
-    };
-  }
-
-
 }

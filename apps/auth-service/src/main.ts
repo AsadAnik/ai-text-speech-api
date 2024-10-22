@@ -10,7 +10,7 @@ async function bootstrap() {
     {
       transport: Transport.RMQ,
       options: {
-        urls: ["amqp://guest:guest@rabbitmq:5672"], // RabbitMQ connection
+        urls: ["amqp://localhost:5672"], // RabbitMQ connection
         queue: "auth_queue", // Queue to listen to
         queueOptions: {
           durable: false, // Non-durable queue
@@ -25,6 +25,10 @@ async function bootstrap() {
 
   // HTTP server setup (on port 3001)
   const httpApp = await NestFactory.create(AuthServiceModule);
+
+  // Set the global prefix for all routes
+  httpApp.setGlobalPrefix('api');
+
   await httpApp.listen(3001); // HTTP port
   console.log("HTTP server running on http://localhost:3001");
 }
