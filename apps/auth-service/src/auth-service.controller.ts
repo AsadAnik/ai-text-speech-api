@@ -1,15 +1,15 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AuthServiceService } from './auth-service.service';
-import { MessagePattern } from '@nestjs/microservices';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '@app/shared';
-import { Repository } from 'typeorm';
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { AuthServiceService } from "./auth-service.service";
+import { MessagePattern } from "@nestjs/microservices";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "@app/shared";
+import { Repository } from "typeorm";
 
 @Controller("auth")
 export class AuthServiceController {
   constructor(
-    private readonly authServiceService: AuthServiceService, 
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly authServiceService: AuthServiceService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>
   ) {}
 
   @Get("login")
@@ -17,18 +17,17 @@ export class AuthServiceController {
     return this.authServiceService.getHello();
   }
 
-  @Post('register')
+  @Post("register")
   async register(@Body() userData: {}): Promise<User> {
     try {
       const newUser = this.userRepository.create(userData);
       return await this.userRepository.save(newUser);
-
-    } catch(error) {
-      console.log('REGISTER ERROR - ', error.message);
+    } catch (error) {
+      console.log("REGISTER ERROR - ", error.message);
     }
   }
 
-  @MessagePattern({ cmd: 'login' })
+  @MessagePattern({ cmd: "login" })
   loginApiGateWay(user: any) {
     return {
       token: "token",
@@ -46,13 +45,12 @@ export class AuthServiceController {
     };
   }
 
-  // region test route
-  @Get("test")
-  test() {
-    return this.userClient.send(
-      { cmd: "test" },
-      { firstname: "armaan", degree: "ssc" }
-    );
-  }
-  
+  // // region test route
+  // @Get("test")
+  // test() {
+  //   return this.userClient.send(
+  //     { cmd: "test" },
+  //     { firstname: "armaan", degree: "ssc" }
+  //   );
+  // }
 }
