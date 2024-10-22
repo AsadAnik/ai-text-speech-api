@@ -22,8 +22,8 @@ import { join } from 'path';
                 migrations: [join(__dirname, './migrations/*{.ts,.js}')],
                 migrationsRun: true,  // Automatically run migrations on app start
                 autoLoadEntities: true,
-                // synchronize: false,   // Disable synchronize in production
-                synchronize: configService.get<string>('NODE_ENV') !== 'production',
+                synchronize: true,   // Disable synchronize in production
+                // synchronize: configService.get<string>('NODE_ENV') !== 'production',
             }),
             inject: [ConfigService],
         }),
