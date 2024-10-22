@@ -56,6 +56,8 @@ export class AuthServiceService {
     return { token: Math.random.toString() }; // Replace with actual token generation logic
   }
 
+  constructor() {}
+
   getHello(): string {
     return "Hello World!";
   }
@@ -66,5 +68,5 @@ export class AuthServiceService {
     };
   }
 
- 
+
 }
