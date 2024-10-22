@@ -1,19 +1,29 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { AuthServiceService } from "./auth-service.service";
-import { MessagePattern} from "@nestjs/microservices";
+import { Client,ClientProxy, MessagePattern,ClientProxyFactory} from "@nestjs/microservices";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@app/shared";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "@app/shared";
 import { LoginUserDto } from "@app/shared";
 import  { HttpException, HttpStatus } from "@nestjs/common";
+import { RmqService } from '@app/common';
+
 
 @Controller("api/auth")
 export class AuthServiceController {
+  private userClient: ClientProxy;
+
   constructor(
+   
     private readonly authServiceService: AuthServiceService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>
-  ) {}
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly rmqService: RmqService
+  ) {
+    this.userClient = ClientProxyFactory.create(
+      this.rmqService.getOptions("auth_queue", true)
+    )
+  }
 
   // @Post('register')
   // async register(@Body() createUserDto: CreateUserDto) {
@@ -69,10 +79,10 @@ export class AuthServiceController {
     };
   }
 
-  // @Get("login")
-  // getHello(): string {
-  //   return this.authServiceService.getHello();
-  // }
+  @Get("login")
+  getHello(): string {
+    return this.authServiceService.getHello();
+  }
 
   // @Post("register")
   // async register(@Body() userData: {}): Promise<User> {
@@ -84,14 +94,14 @@ export class AuthServiceController {
   //   }
   // }
 
-  // @MessagePattern({ cmd: "login" })
-  // loginApiGateWay(user: any) {
-  //   return {
-  //     token: "token",
-  //     user,
-  //     message: "i am new here",
-  //   };
-  // }
+  @MessagePattern({ cmd: "login" })
+  loginApiGateWay(user: any) {
+    return {
+      token: "token",
+      user,
+      message: "i am new here",
+    };
+  }
 
   // region Message Receive Login
   // @MessagePattern({ cmd: "verify-me" })
@@ -103,13 +113,13 @@ export class AuthServiceController {
   // }
 
   // region test route
-  // @Get("test")
-  // test() {
-  //   return this.userClient.send(
-  //     { cmd: "test" },
-  //     { firstname: "armaan", degree: "ssc" }
-  //   );
-  // }
+  @Get("test")
+  test() {
+    return this.userClient.send(
+      { cmd: "test" },
+      { firstname: "armaan", degree: "ssc" }
+    );
+  }
 
  
 }
