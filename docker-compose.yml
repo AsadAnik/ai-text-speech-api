@@ -25,7 +25,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: ai_text_speech
+      POSTGRES_DB: ai_ts_user_db
     ports:
       - "5432:5432"
     networks:
@@ -64,7 +64,7 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: ai_text_speech
+      POSTGRES_DB: ai_ts_user_db
 
   # region: User Service
   user-service:
@@ -88,7 +88,7 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: ai_text_speech
+      POSTGRES_DB: ai_ts_user_db
 
 volumes:
   postgres-data:

@@ -19,5 +19,5 @@ export const AppDataSource = new DataSource({
   database: configService.get<string>('POSTGRES_DB'),
   entities: [User],  // Include all the entities you want to be reflected in the database
   migrations: [join(__dirname, '/migrations/*.js')], // Adjust the migration path if needed
-  synchronize: false,  // Ensure it's disabled in production
+  synchronize: true,  // Ensure it's disabled in production
 });
