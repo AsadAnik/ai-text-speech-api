@@ -43,5 +43,4 @@ export class UserServiceController {
   test(data: unknown) {
     return data;
   }
-
 }
