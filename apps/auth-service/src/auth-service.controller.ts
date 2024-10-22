@@ -5,10 +5,14 @@ import { User } from "@app/shared";
 import { Repository } from "typeorm";
 import { LoginUserDto, RegisterUserDto } from "@app/shared";
 import { HttpException, HttpStatus } from "@nestjs/common";
+import { ClientProxy, ClientProxyFactory, Transport } from "@nestjs/microservices";
 
 @Controller("auth")
 export class AuthServiceController {
+  private userClient: ClientProxy;
+
   constructor(
+   
     private readonly authServiceService: AuthServiceService,
     @InjectRepository(User) private readonly userRepository: Repository<User>
   ) { }
