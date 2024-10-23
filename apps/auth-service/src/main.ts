@@ -1,6 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { AuthServiceModule } from "./auth-service.module";
 import { MicroserviceOptions, Transport } from "@nestjs/microservices";
+import { SwaggerConfig } from "@app/common";
 
 async function bootstrap() {
   // RabbitMQ microservice configuration
@@ -29,7 +30,11 @@ async function bootstrap() {
   // Set the global prefix for all routes
   httpApp.setGlobalPrefix('api');
 
-  await httpApp.listen(3001); // HTTP port
+  // Setup Swagger for API documentation
+  // [http://localhost:3001/api-docs]
+  SwaggerConfig.setup(httpApp, 'Auth Service');
+
+  await httpApp.listen(3001);
   console.log("HTTP server running on http://localhost:3001");
 }
 

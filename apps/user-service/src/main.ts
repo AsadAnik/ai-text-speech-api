@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { UserServiceModule } from './user-service.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { SwaggerConfig } from '@app/common';
 // import { RmqService } from '@app/common';
 // import { ConfigService } from '@nestjs/config';
 
@@ -11,7 +12,7 @@ async function bootstrap() {
     {
       transport: Transport.RMQ,
       options: {
-        urls: ["amqp://guest:guest@rabbitmq:5672"], // RabbitMQ connection
+        urls: ["amqp://localhost:5672"], // RabbitMQ connection
         queue: "user_queue", // Queue to listen to
         queueOptions: {
           durable: false, // Non-durable queue
@@ -24,9 +25,17 @@ async function bootstrap() {
   await rabbitMqApp.listen();
   console.log("RabbitMQ User Service is listening...");
 
-  // HTTP server setup (on port 3001)
+  // HTTP server setup (on port 3002)
   const httpApp = await NestFactory.create(UserServiceModule);
-  await httpApp.listen(3002); // HTTP port
+
+  // Set the global prefix for all routes
+  httpApp.setGlobalPrefix('api');
+
+  // Setup Swagger for API documentation
+  // [http://localhost:3002/api-docs]
+  SwaggerConfig.setup(httpApp, 'User Service');
+
+  await httpApp.listen(3002);
   console.log("HTTP server running on http://localhost:3002");
 }
 bootstrap();

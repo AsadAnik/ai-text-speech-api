@@ -14,7 +14,7 @@ down:
 	docker-compose down
 
 up-rmq:
-	docker-compose up rabbitmq
+	docker-compose up rabbitmq -d
 
 restart-rmq:
 	docker-compose restart rabbitmq
@@ -23,4 +23,7 @@ down-rmq:
 	docker-compose down rabbitmq
 
 up-pg:
-	docker-compose up --build postgres
+	docker-compose up --build postgres -d
+
+pg-shell:
+	docker-compose exec postgres psql -U postgres
