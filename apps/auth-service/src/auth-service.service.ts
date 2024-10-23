@@ -5,27 +5,33 @@ import * as bcrypt from "bcrypt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@app/shared";
 import { HttpException, HttpStatus } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthServiceService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService // Inject JwtService
+  ) {}
 
   /**
    * REGISTER USER SERVICE
-   * @param body 
-   * @returns 
+   * @param body
+   * @returns
    */
   //  region register service
   async register(body: RegisterUserDto): Promise<User> {
-    const { email, username, password, first_name, last_name, image_file } = body;
+    const { email, username, password, first_name, last_name, image_file } =
+      body;
 
     // Check if user already exists
     const existingUser = await this.emailOrUsernameExists(username, email);
 
-    console.log('EXISTTSSS - ', existingUser);
-
     if (existingUser) {
-      throw new HttpException("This Username or Email is already exists", HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        "This Username or Email is already exists",
+        HttpStatus.BAD_REQUEST
+      );
     }
 
     // Hash the password
@@ -39,50 +45,112 @@ export class AuthServiceService {
       email,
       username,
       password: hashedPassword,
-      image_url: image_file || 'default.png', // Handle optional image
+      image_url: image_file || "default.png", // Handle optional image
     });
 
     // Save the user to the database
     return await this.userRepository.save(newUser);
   }
 
-
   /**
    * LOGIN USER SERVICE
-   * @param loginUserDto 
-   * @returns 
+   * @param loginUserDto
+   * @returns
    */
   // region login service
-  async login(loginUserDto: LoginUserDto): Promise<{ token: string }> {
-    const { email, password } = loginUserDto;
+  async login(loginUserDto: LoginUserDto): Promise<any> {
+    const { usernameOrEmail, password } = loginUserDto;
 
-    const user = await this.userRepository.findOne({ where: { email } });
+    // Check if the user exists by email or username
+    const user = await this.emailOrUsernameExists(usernameOrEmail);
+
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new HttpException("Invalid credentials", HttpStatus.UNAUTHORIZED);
     }
 
-    // Here, you would generate a token (JWT, for example)
-    // For simplicity, we're just returning a mock token
-    return { token: Math.random.toString() }; // Replace with actual token generation logic
+    // Generate a real JWT token
+    const accessToken = this.generateJwtToken(user);
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      image_url: user.image_url || "default.png", // Optional image handling
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+      accessToken,
+    };
   }
 
   /**
    * EMAIL / USERNAME EXISTS SERVICE CHECK
-   * @param emailOrUsername 
-   * @returns 
+   * This method can handle both two arguments (for registration)
+   * or a single argument (for login).
+   *
+   * @param usernameOrEmail
+   * @param email (optional)
+   * @returns User | undefined
    */
+  async emailOrUsernameExists(
+    usernameOrEmail: string,
+    email?: string
+  ): Promise<User | undefined> {
+    if (!usernameOrEmail || usernameOrEmail.trim() === "") {
+      throw new HttpException(
+        "Username or Email must be provided",
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
+    // If email is provided, validate it as well
+    if (email && email.trim() === "") {
+      throw new HttpException("Email must be valid", HttpStatus.BAD_REQUEST);
+    }
+    // If both usernameOrEmail and email are provided (for registration)
+    if (email) {
+      return this.userRepository.findOne({
+        where: [{ email }, { username: usernameOrEmail }],
+      });
+    }
+
+    // If only usernameOrEmail is provided (for login)
+    return this.userRepository.findOne({
+      where: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
+    });
+  }
+
   // region Username/Email Availity
-  async emailOrUsernameExists(username: string, email: string): Promise<boolean> {
-    let user: User | boolean;
+  // async emailOrUsernameExists(username: string, email: string): Promise<boolean> {
+  //   let user: User | boolean;
 
-    if (username && username.trim() !== '') {
-      user = await this.userRepository.findOne({ where: { username } });
-    }
+  //   if (username && username.trim() !== '') {
+  //     user = await this.userRepository.findOne({ where: { username } });
+  //   }
 
-    if (email && email.trim() !== '') {
-      user = await this.userRepository.findOne({ where: { email } });
-    }
+  //   if (email && email.trim() !== '') {
+  //     user = await this.userRepository.findOne({ where: { email } });
+  //   }
 
-    return !!user;
+  //   return !!user;
+  // }
+  // async emailOrUsernameExists(usernameOrEmail: string): Promise<User | undefined> {
+  //   return this.userRepository.findOne({
+  //     where: [
+  //       { email: usernameOrEmail },
+  //       { username: usernameOrEmail }
+  //     ]
+  //   });
+  // }
+
+  /**
+   * GENERATE JWT TOKEN
+   */
+  private generateJwtToken(user: User): string {
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      username: user.username,
+    };
+    return this.jwtService.sign(payload); // Use JwtService to sign the token
   }
 }

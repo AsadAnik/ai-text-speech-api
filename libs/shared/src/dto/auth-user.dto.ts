@@ -27,10 +27,9 @@ export class RegisterUserDto {
 
 // region Login User DTO
 export class LoginUserDto {
-  @IsEmail()
   @IsNotEmpty()
   @IsString()
-  readonly email: string;
+  readonly usernameOrEmail: string;
 
   @IsString()
   @IsNotEmpty()
