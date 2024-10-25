@@ -7,6 +7,7 @@ import { LoginUserDto, RegisterUserDto } from "@app/shared";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 
+
 @Controller("auth")
 export class AuthServiceController {
   private userClient: ClientProxy;
@@ -16,6 +17,7 @@ export class AuthServiceController {
     private readonly authServiceService: AuthServiceService,
     @InjectRepository(User) private readonly userRepository: Repository<User>
   ) { }
+
 
   /**
    * REGISTER USER CONTROLLER
