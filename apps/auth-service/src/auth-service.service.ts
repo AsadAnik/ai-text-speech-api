@@ -12,14 +12,15 @@ export class AuthServiceService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService // Inject JwtService
-  ) {}
+  ) { }
+
 
   /**
    * REGISTER USER SERVICE
    * @param body
    * @returns
    */
-  //  region register service
+  //  region Register Service
   async register(body: RegisterUserDto): Promise<User> {
     const { email, username, password, first_name, last_name, image_file } =
       body;
@@ -52,12 +53,13 @@ export class AuthServiceService {
     return await this.userRepository.save(newUser);
   }
 
+
   /**
    * LOGIN USER SERVICE
    * @param loginUserDto
    * @returns
    */
-  // region login service
+  // region Login Service
   async login(loginUserDto: LoginUserDto): Promise<any> {
     const { usernameOrEmail, password } = loginUserDto;
 
@@ -82,6 +84,7 @@ export class AuthServiceService {
     };
   }
 
+
   /**
    * EMAIL / USERNAME EXISTS SERVICE CHECK
    * This method can handle both two arguments (for registration)
@@ -91,10 +94,8 @@ export class AuthServiceService {
    * @param email (optional)
    * @returns User | undefined
    */
-  async emailOrUsernameExists(
-    usernameOrEmail: string,
-    email?: string
-  ): Promise<User | undefined> {
+  // region Username/Email Availity
+  async emailOrUsernameExists(usernameOrEmail: string, email?: string): Promise<User | undefined> {
     if (!usernameOrEmail || usernameOrEmail.trim() === "") {
       throw new HttpException(
         "Username or Email must be provided",
@@ -107,7 +108,7 @@ export class AuthServiceService {
       throw new HttpException("Email must be valid", HttpStatus.BAD_REQUEST);
     }
     // If both usernameOrEmail and email are provided (for registration)
-    if (email) {
+    if (usernameOrEmail && email) {
       return this.userRepository.findOne({
         where: [{ email }, { username: usernameOrEmail }],
       });
@@ -119,38 +120,21 @@ export class AuthServiceService {
     });
   }
 
-  // region Username/Email Availity
-  // async emailOrUsernameExists(username: string, email: string): Promise<boolean> {
-  //   let user: User | boolean;
-
-  //   if (username && username.trim() !== '') {
-  //     user = await this.userRepository.findOne({ where: { username } });
-  //   }
-
-  //   if (email && email.trim() !== '') {
-  //     user = await this.userRepository.findOne({ where: { email } });
-  //   }
-
-  //   return !!user;
-  // }
-  // async emailOrUsernameExists(usernameOrEmail: string): Promise<User | undefined> {
-  //   return this.userRepository.findOne({
-  //     where: [
-  //       { email: usernameOrEmail },
-  //       { username: usernameOrEmail }
-  //     ]
-  //   });
-  // }
 
   /**
    * GENERATE JWT TOKEN
+   * @param user 
+   * @returns 
    */
+  // region Generate JWT-Token
   private generateJwtToken(user: User): string {
     const payload = {
       sub: user.id,
       email: user.email,
       username: user.username,
     };
-    return this.jwtService.sign(payload); // Use JwtService to sign the token
+    
+    // Use JwtService to sign the token
+    return this.jwtService.sign(payload);
   }
 }

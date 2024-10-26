@@ -13,7 +13,6 @@ export class AuthServiceController {
   private userClient: ClientProxy;
 
   constructor(
-   
     private readonly authServiceService: AuthServiceService,
     @InjectRepository(User) private readonly userRepository: Repository<User>
   ) { }
