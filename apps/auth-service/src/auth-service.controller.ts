@@ -46,12 +46,12 @@ export class AuthServiceController {
         success: true,
         message: 'User is Registered!',
         data: {
-          id: newUser.id,
-          username: newUser.username,
-          email: newUser.email,
-          image_url: newUser.image_url || 'default.png', // Handle optional image URL
-          created_at: newUser.created_at.getTime(),
-          updated_at: newUser.updated_at.getTime(),
+          id: newUser?.id,
+          username: newUser?.username,
+          email: newUser?.email,
+          image_url: newUser?.image_url || 'default.png', // Handle optional image URL
+          created_at: newUser?.created_at.getTime(),
+          updated_at: newUser?.updated_at.getTime(),
         },
       };
 

@@ -6,6 +6,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@app/shared";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { AuthUserResponseType } from '@app/shared';
+
 
 @Injectable()
 export class AuthServiceService {
@@ -14,7 +16,6 @@ export class AuthServiceService {
     private readonly jwtService: JwtService // Inject JwtService
   ) { }
 
-
   /**
    * REGISTER USER SERVICE
    * @param body
@@ -22,8 +23,7 @@ export class AuthServiceService {
    */
   //  region Register Service
   async register(body: RegisterUserDto): Promise<User> {
-    const { email, username, password, first_name, last_name, image_file } =
-      body;
+    const { email, username, password, first_name, last_name, image_file } = body;
 
     // Check if user already exists
     const existingUser = await this.emailOrUsernameExists(username, email);
@@ -38,6 +38,10 @@ export class AuthServiceService {
     // Hash the password
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Generate the OTP here..
+    const otp = this.generateOtp();
+    console.log("Generated OTP: ", otp);
 
     // Create the new user
     const newUser = this.userRepository.create({
@@ -60,7 +64,7 @@ export class AuthServiceService {
    * @returns
    */
   // region Login Service
-  async login(loginUserDto: LoginUserDto): Promise<any> {
+  async login(loginUserDto: LoginUserDto): Promise<AuthUserResponseType> {
     const { usernameOrEmail, password } = loginUserDto;
 
     // Check if the user exists by email or username
@@ -89,7 +93,6 @@ export class AuthServiceService {
    * EMAIL / USERNAME EXISTS SERVICE CHECK
    * This method can handle both two arguments (for registration)
    * or a single argument (for login).
-   *
    * @param usernameOrEmail
    * @param email (optional)
    * @returns User | undefined
@@ -120,6 +123,15 @@ export class AuthServiceService {
     });
   }
 
+  /**
+   * GENERATE OTP FOR EMAIL VERIFICATION
+   * @returns 
+   */
+  // region Generate OTP
+  private generateOtp(): string {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    return otp.toString();
+  }
 
   /**
    * GENERATE JWT TOKEN
