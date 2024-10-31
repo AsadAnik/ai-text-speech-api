@@ -6,7 +6,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@app/shared";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { AuthUserResponseType } from '@app/shared';
+import { AuthUserLoginType, AuthUserType } from '@app/shared';
 
 
 @Injectable()
@@ -22,7 +22,7 @@ export class AuthServiceService {
    * @returns
    */
   //  region Register Service
-  async register(body: RegisterUserDto): Promise<User> {
+  async register(body: RegisterUserDto): Promise<AuthUserType> {
     const { email, username, password, first_name, last_name, image_file } = body;
 
     // Check if user already exists
@@ -64,7 +64,7 @@ export class AuthServiceService {
    * @returns
    */
   // region Login Service
-  async login(loginUserDto: LoginUserDto): Promise<AuthUserResponseType> {
+  async login(loginUserDto: LoginUserDto): Promise<AuthUserLoginType> {
     const { usernameOrEmail, password } = loginUserDto;
 
     // Check if the user exists by email or username
