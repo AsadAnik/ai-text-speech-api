@@ -70,6 +70,7 @@ export class AuthServiceController {
   async login(@Body() loginUserDto: LoginUserDto) {
     try {
       const loginData = await this.authServiceService.login(loginUserDto);
+      
       return {
         status: 200,
         success: true,

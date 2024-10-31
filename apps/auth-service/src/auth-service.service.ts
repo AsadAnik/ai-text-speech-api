@@ -7,13 +7,16 @@ import { User } from "@app/shared";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { AuthUserLoginType, AuthUserType } from '@app/shared';
+import { MailerService } from "@app/common";
+import { v4 as uuid } from 'uuid';
 
 
 @Injectable()
 export class AuthServiceService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private readonly jwtService: JwtService // Inject JwtService
+    private readonly jwtService: JwtService,
+    private readonly mailerService: MailerService,
   ) { }
 
   /**
@@ -35,22 +38,29 @@ export class AuthServiceService {
       );
     }
 
-    // Hash the password
+    // Hash the password and generate verification code
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
+    const verificationOtpCode = this.generateOtpVerificationCodes();
 
     // Create the new user
     const newUser = this.userRepository.create({
+      id: `${uuid()}`,
       first_name,
       last_name,
       email,
       username,
       password: hashedPassword,
-      image_url: image_file || "default.png", // Handle optional image
+      image_url: image_file || "default.png",
+      is_verified: false,
+      verification_code: verificationOtpCode,
     });
 
-    // Save the user to the database
-    return await this.userRepository.save(newUser);
+    // Save the user to the database and Send verification mail
+    const savedUser = await this.userRepository.save(newUser);
+    await this.mailerService.sendVerificationMail(email, verificationOtpCode);
+
+    return savedUser;
   }
 
 
@@ -77,7 +87,7 @@ export class AuthServiceService {
       id: user.id,
       username: user.username,
       email: user.email,
-      image_url: user.image_url || "default.png", // Optional image handling
+      image_url: user.image_url || "default.png",
       created_at: user.created_at,
       updated_at: user.updated_at,
       accessToken,
@@ -124,9 +134,9 @@ export class AuthServiceService {
    * @returns 
    */
   // region Generate OTP
-  private generateOtp(): string {
+  private generateOtpVerificationCodes(): string {
     const otp = Math.floor(100000 + Math.random() * 900000);
-    return otp.toString();
+    return otp?.toString();
   }
 
   /**
@@ -141,7 +151,7 @@ export class AuthServiceService {
       email: user.email,
       username: user.username,
     };
-    
+
     // Use JwtService to sign the token
     return this.jwtService.sign(payload);
   }

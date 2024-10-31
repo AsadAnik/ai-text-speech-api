@@ -3,7 +3,7 @@
  */
 // region Response Type
 export type AuthUserLoginType = {
-    id: number;
+    id: string;
     email: string;
     username: string;
     accessToken: string;
@@ -14,7 +14,7 @@ export type AuthUserLoginType = {
 }
 
 export type AuthUserType = {
-    id: number;
+    id: string;
     username: string;
     email: string;
     password: string;

@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { AuthServiceController } from "./auth-service.controller";
 import { AuthServiceService } from "./auth-service.service";
-import { RmqModule, DatabaseModule } from "@app/common";
+import { RmqModule, DatabaseModule, MailerModule } from "@app/common";
 import { ConfigModule } from "@nestjs/config";
 import * as Joi from "joi";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -25,6 +25,7 @@ import { JwtModule } from "@nestjs/jwt";
     RmqModule,
     TypeOrmModule.forFeature([User]),
     DatabaseModule,
+    MailerModule,
   ],
   controllers: [AuthServiceController],
   providers: [AuthServiceService],

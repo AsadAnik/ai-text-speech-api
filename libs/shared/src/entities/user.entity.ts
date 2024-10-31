@@ -2,8 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 
 @Entity('user')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: false })
   username: string;
@@ -22,6 +22,12 @@ export class User {
 
   @Column({ nullable: true })
   image_url: string;
+
+  @Column({ nullable: true })
+  is_verified: boolean;
+
+  @Column({ nullable: true })
+  verification_code: string;
 
   @CreateDateColumn()
   created_at: Date;
