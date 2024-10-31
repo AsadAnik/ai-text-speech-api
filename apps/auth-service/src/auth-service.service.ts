@@ -39,10 +39,6 @@ export class AuthServiceService {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Generate the OTP here..
-    const otp = this.generateOtp();
-    console.log("Generated OTP: ", otp);
-
     // Create the new user
     const newUser = this.userRepository.create({
       first_name,
