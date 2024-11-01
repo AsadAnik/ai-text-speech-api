@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Query } from "@nestjs/common";
 import { AuthServiceService } from "./auth-service.service";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "@app/shared";
@@ -23,6 +23,7 @@ export class AuthServiceController {
    * @param body 
    * @returns 
    */
+  // region: Register User
   @Post('register')
   async register(@Body() body: RegisterUserDto): Promise<{}> {
     try {
@@ -66,6 +67,7 @@ export class AuthServiceController {
    * @param loginUserDto 
    * @returns 
    */
+  // region: Login User
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     try {
@@ -88,6 +90,20 @@ export class AuthServiceController {
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.UNAUTHORIZED);
     }
+  }
+
+  /**
+   * VERIFY USER CONTROLLER
+   * @param body 
+   * @param query 
+   */
+  // region: Verify User
+  @Post('verify')
+  async verify(@Body() body: { usernameOrEmail: string }, @Query() query: { verifyCode: string }): Promise<void> {
+    const { usernameOrEmail } = body;
+    const { verifyCode } = query;
+
+    console.log('BODY AND QUERY ', body, query);
   }
 
   // region Message Receive Login
