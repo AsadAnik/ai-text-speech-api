@@ -25,7 +25,7 @@ export class AuthServiceService {
    * @returns
    */
   //  region Register Service
-  async register(body: RegisterUserDto): Promise<AuthUserType> {
+  public async register(body: RegisterUserDto): Promise<AuthUserType> {
     const { email, username, password, first_name, last_name, image_file } = body;
 
     // Check if user already exists
@@ -70,10 +70,8 @@ export class AuthServiceService {
    * @returns
    */
   // region Login Service
-  async login(loginUserDto: LoginUserDto): Promise<AuthUserLoginType> {
+  public async login(loginUserDto: LoginUserDto): Promise<AuthUserLoginType> {
     const { usernameOrEmail, password } = loginUserDto;
-
-    // Check if the user exists by email or username
     const user = await this.emailOrUsernameExists(usernameOrEmail);
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -104,7 +102,7 @@ export class AuthServiceService {
    * @returns User | undefined
    */
   // region Username/Email Availity
-  async emailOrUsernameExists(usernameOrEmail: string, email?: string): Promise<User | undefined> {
+  public async emailOrUsernameExists(usernameOrEmail: string, email?: string): Promise<User | undefined> {
     if (!usernameOrEmail || usernameOrEmail.trim() === "") {
       throw new HttpException(
         "Username or Email must be provided",
@@ -130,6 +128,27 @@ export class AuthServiceService {
   }
 
   /**
+   * VERIFY USER SERVICE
+   * @param user 
+   * @param verifyCode 
+   */
+  // region Verify User Service
+  public async verifyUser(user: User, verifyCode: string): Promise<void> {
+    if (user && user?.is_verified) {
+      if (user.verification_code !== verifyCode) {
+        throw new HttpException('Invalid verification code', HttpStatus.BAD_REQUEST);
+      }
+
+      await this.userRepository.update(user.id, 
+        { 
+          is_verified: true, 
+          verification_code: '' 
+        }
+      );
+    }
+  }
+
+  /**
    * GENERATE OTP FOR EMAIL VERIFICATION
    * @returns 
    */
@@ -151,8 +170,6 @@ export class AuthServiceService {
       email: user.email,
       username: user.username,
     };
-
-    // Use JwtService to sign the token
     return this.jwtService.sign(payload);
   }
 }

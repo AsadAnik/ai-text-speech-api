@@ -20,13 +20,13 @@ export class User {
   @Column({ nullable: true })
   last_name: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: '' })
   image_url: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: false })
   is_verified: boolean;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: '' })
   verification_code: string;
 
   @CreateDateColumn()
