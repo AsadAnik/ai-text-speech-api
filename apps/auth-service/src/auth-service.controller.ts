@@ -56,7 +56,7 @@ export class AuthServiceController {
           id: newUser?.id,
           username: newUser?.username,
           email: newUser?.email,
-          image_url: newUser?.image_url || 'default.png', // Handle optional image URL
+          image_url: newUser?.image_url || 'default.png',
           created_at: newUser?.created_at.getTime(),
           updated_at: newUser?.updated_at.getTime(),
         },
