@@ -127,6 +127,7 @@ export class AuthServiceService {
     });
   }
 
+
   /**
    * VERIFY USER SERVICE
    * @param user 
@@ -148,6 +149,27 @@ export class AuthServiceService {
     }
   }
 
+
+  /**
+   * RESET VERIFY CODE SERVICE
+   * @param userId 
+   * @param email 
+   */
+  // region Reset Verify Code
+  public async resetVerifyCode(userId: string, email: string): Promise<void> {
+    const verificationOtpCode = this.generateOtpVerificationCodes();
+
+    // Update DB..
+    await this.userRepository.update(userId, {
+      verification_code: verificationOtpCode,
+      is_verified: false,
+    });
+
+    // Send verification mail
+    await this.mailerService.sendVerificationMail(email, verificationOtpCode);
+  }
+
+  
   /**
    * GENERATE OTP FOR EMAIL VERIFICATION
    * @returns 
@@ -157,6 +179,7 @@ export class AuthServiceService {
     const otp = Math.floor(100000 + Math.random() * 900000);
     return otp?.toString();
   }
+
 
   /**
    * GENERATE JWT TOKEN

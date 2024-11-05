@@ -144,6 +144,46 @@ export class AuthServiceController {
     }
   }
 
+
+  /**
+   * RESET VERIFY CODE CONTROLLER
+   * @param query 
+   * @returns 
+   */
+  // region: Reset Verify
+  @ApiOperation({ summary: 'Reset verify code' })
+  @ApiResponse({ status: 200, description: 'Verify code reset successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @Post('reset-verify')
+  async resetVerify(@Query() query: { usernameOrEmail: string }) {
+    const { usernameOrEmail } = query;
+
+    try {
+      const user = await this.authServiceService.emailOrUsernameExists(usernameOrEmail);
+
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.authServiceService.resetVerifyCode(user?.id, user?.email);
+
+      return {
+        status: 200,
+        success: true,
+        message: 'Verify code reset successfully!',
+        data: {
+          id: user?.id,
+          email: user?.email,
+          is_verified: user?.is_verified,
+          verification_code: user?.verification_code,
+        }
+      }
+
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
   // region Message Receive Login
   // @MessagePattern({ cmd: "verify-me" })
   // login(user: any) {
