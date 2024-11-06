@@ -1,8 +1,5 @@
 import { Body, Controller, Post, Query } from "@nestjs/common";
 import { AuthServiceService } from "./auth-service.service";
-import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "@app/shared";
-import { Repository } from "typeorm";
 import { LoginUserDto, RegisterUserDto } from "@app/shared";
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
@@ -15,11 +12,7 @@ import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 export class AuthServiceController {
   private userClient: ClientProxy;
 
-  constructor(
-    private readonly authServiceService: AuthServiceService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>
-  ) { }
-
+  constructor(private readonly authServiceService: AuthServiceService) { }
 
   /**
    * REGISTER USER CONTROLLER

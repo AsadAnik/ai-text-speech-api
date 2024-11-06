@@ -3,7 +3,9 @@ import { UserServiceController } from './user-service.controller';
 import { UserServiceService } from './user-service.service';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { RmqModule } from '@app/common';
+import { DatabaseModule, RmqModule } from '@app/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '@app/shared';
 
 @Module({
   imports: [
@@ -15,7 +17,9 @@ import { RmqModule } from '@app/common';
       }),
       envFilePath: './apps/user-service/.env',
     }),
+    TypeOrmModule.forFeature([User]),
     RmqModule,
+    DatabaseModule,
   ],
   controllers: [UserServiceController],
   providers: [UserServiceService],
