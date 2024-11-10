@@ -6,6 +6,7 @@ import * as Joi from 'joi';
 import { DatabaseModule, RmqModule } from '@app/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@app/shared';
+import {CloudinaryModule} from "./cloudinary.module";
 
 @Module({
   imports: [
@@ -20,8 +21,11 @@ import { User } from '@app/shared';
     TypeOrmModule.forFeature([User]),
     RmqModule,
     DatabaseModule,
+    CloudinaryModule,
   ],
   controllers: [UserServiceController],
   providers: [UserServiceService],
+  exports: [UserServiceService], // Export if needed in other modules
+
 })
 export class UserServiceModule {}
